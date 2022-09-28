@@ -1,7 +1,7 @@
 import UserLogin from '../interfaces/userLogin.interface';
 import UserModel from '../database/models/UserModel'
 import User from '../interfaces/user.interface';
-var bcrypt = require('bcryptjs');
+// var bcrypt = require('bcryptjs');
 // import { NotFoundError } from 'restify-errors';
 
 class UserService {
@@ -27,9 +27,9 @@ class UserService {
     return await this.model.findOne({ where: { email: userLogin.email } })
   }
 
-  private comparePassword = (receivedPass: string, passDatabase: string): boolean => {
-    return bcrypt.compareSync(receivedPass, passDatabase);
-  }
+  // private comparePassword = (receivedPass: string, passDatabase: string): boolean => {
+  //   return bcrypt.compareSync(receivedPass, passDatabase);
+  // }
 }
 
 export default UserService;
