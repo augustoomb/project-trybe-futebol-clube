@@ -11,7 +11,6 @@ class UserService {
     const user: unknown | UserModel = await this.getByEmail(userLogin);
 
     if (user instanceof UserModel) {
-      // return bcrypt.compareSync(userLogin.password, user.password)
       return true;
     } else {
       return false;
@@ -28,9 +27,9 @@ class UserService {
     return await this.model.findOne({ where: { email: userLogin.email } })
   }
 
-  // private comparePassword = (receivedPass: string, passDatabase: string): boolean => {
-  //   return bcrypt.compareSync(receivedPass, passDatabase);
-  // }
+  private comparePassword = (receivedPass: string, passDatabase: string): boolean => {
+    return bcrypt.compareSync(receivedPass, passDatabase);
+  }
 }
 
 export default UserService;
