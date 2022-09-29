@@ -10,13 +10,14 @@ class UserService {
   jwt = new JwtTokenHelpers();
 
   public async login(userLogin: UserLogin): Promise<any> {
-    const user = await this.getByEmail(userLogin.email);
-
-    if (!user) {
+    // const user = await this.getByEmail(userLogin.email);
+    const user = await this.model.findOne({ where: { email: userLogin.email } });
+    if (user === null) {
       return false;
+    } else {
+      const token = await this.jwt.createToken(user as User);
+      return token;
     }
-    const token = await this.jwt.createToken(user as User);
-    return token;
   }
 
   public async getAll(): Promise<User | unknown> {
@@ -25,9 +26,9 @@ class UserService {
     return users;
   }
 
-  private async getByEmail(email: string): Promise<User | unknown> {
-    return await this.model.findOne({ where: { email: email } })
-  }
+  // public async getByEmail(email: string): Promise<User | unknown> {
+  //   return await this.model.findOne({ where: { email } })
+  // }
 
   // private comparePassword = (receivedPass: string, passDatabase: string): boolean => {
   //   return bcrypt.compareSync(receivedPass, passDatabase);

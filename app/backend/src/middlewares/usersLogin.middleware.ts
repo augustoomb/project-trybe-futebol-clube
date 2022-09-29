@@ -9,12 +9,21 @@ const schemaObjUser = Joi.object({
   password: Joi.string().required().min(7),
 })
 
+const messageError = (typeError: string) => {
+  if (typeError === 'string.email' || typeError === 'string.min') {
+    return 'Incorrect email or password';
+  } else {
+    return 'All fields must be filled';
+  }
+}
+
 function validationUserLogin(req: Request, res: Response, next: NextFunction) {
   const userLogin: UserLogin = req.body;
 
   if (schemaObjUser.validate(userLogin).error) {
-    const errorMess = schemaObjUser.validate(userLogin).error?.message;
-    return res.status(StatusCodes.LENGTH_REQUIRED).json({ message: errorMess })
+    const typeError = schemaObjUser.validate(userLogin).error?.details[0].type;
+    // return res.status(StatusCodes.BAD_REQUEST).json({ message: 'All fields must be filled' })
+    return res.status(StatusCodes.BAD_REQUEST).json({ message: messageError(typeError) })
   }
 
   next();

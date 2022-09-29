@@ -10,7 +10,7 @@ class UsersController {
     const password = req.body.password;
 
     const token = await this.userService.login({ email, password });
-    if (!token) res.status(StatusCodes.NOT_FOUND).json("Not Found")
+    if (!token) res.status(StatusCodes.UNAUTHORIZED).json({ message: 'Incorrect email or password' })
     res.status(StatusCodes.OK).json({ token: token });
   };
 
