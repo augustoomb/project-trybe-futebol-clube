@@ -11,14 +11,14 @@ class JwtTokenHelpers {
     return token;
   }
 
-  // public verifyToken(token: string) {
-  //   try {
-  //     const data = jwt.verify(token, this.secret);
-  //     return data;
-  //   } catch (error) {
-  //     return error;
-  //   }
-  // }
+  public verifyToken(token: string) {
+    try {
+      const data = jwt.verify(token, this.secret);
+      return data;
+    } catch (error) {
+      return error as jwt.JsonWebTokenError;
+    }
+  }
 }
 
 export default JwtTokenHelpers;

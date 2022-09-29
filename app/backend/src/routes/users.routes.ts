@@ -6,7 +6,7 @@ import validationAuth from '../middlewares/auth.middleware';
 const usersRouter = Router();
 const usersController = new UsersController();
 
-// usersRouter.post('/login/validate', validationAuth, usersController.loginValidate);
+usersRouter.get('/login/validate', validationAuth, usersController.loginValidate);
 usersRouter.post('/login', validationUserLogin, usersController.login);
 
 export default usersRouter;
