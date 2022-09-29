@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import UserService from '../services/users.service';
 import { StatusCodes } from 'http-status-codes';
+// import { RequestAuth } from "../interfaces/requestAuth.interface";
 
 class UsersController {
   userService = new UserService();
@@ -10,14 +11,22 @@ class UsersController {
     const password = req.body.password;
 
     const token = await this.userService.login({ email, password });
-    if (!token) res.status(StatusCodes.UNAUTHORIZED).json({ message: 'Incorrect email or password' })
-    res.status(StatusCodes.OK).json({ token: token });
+    if (!token) {
+      res.status(401).json({ message: 'Incorrect email or password' })
+    } else {
+      res.status(200).json({ token: token });
+    }
   };
 
-  public getAll = async (_req: Request, res: Response) => {
-    const users = await this.userService.getAll();
-    res.status(StatusCodes.OK).json(users);
-  }
+  // public getAll = async (_req: Request, res: Response) => {
+  //   const users = await this.userService.getAll();
+  //   res.status(StatusCodes.OK).json(users);
+  // }
+
+  // public loginValidate = async (req: Request, res: Response) => {
+  //   const { user } = await req.body;
+  //   res.status(200).json({ role: user.payload.role })
+  // }
 }
 
 export default UsersController;

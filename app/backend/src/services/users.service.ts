@@ -2,7 +2,8 @@ import UserLogin from '../interfaces/userLogin.interface';
 import UserModel from '../database/models/UserModel';
 import User from '../interfaces/user.interface';
 import JwtTokenHelpers from '../helpers/jwtTokenHelpers';
-// var bcrypt = require('bcryptjs');
+import { compareSync } from 'bcryptjs';
+// import * as bcrypt from 'bcryptjs';
 // import { NotFoundError } from 'restify-errors';
 
 class UserService {
@@ -10,29 +11,28 @@ class UserService {
   jwt = new JwtTokenHelpers();
 
   public async login(userLogin: UserLogin): Promise<any> {
-    // const user = await this.getByEmail(userLogin.email);
     const user = await this.model.findOne({ where: { email: userLogin.email } });
-    if (user === null) {
-      return false;
-    } else {
-      const token = await this.jwt.createToken(user as User);
+    // if (user !== null && this.comparePassword(userLogin.password, user.password)) {
+    if (user !== null) {
+      const token = this.jwt.createToken(user);
       return token;
+      // const compPass = this.comparePassword(userLogin.password, user.password);
+      // compPass ? await this.jwt.createToken(user as User) : false;
+    } else {
+      return false;
     }
   }
 
-  public async getAll(): Promise<User | unknown> {
-    const users = await this.model.findAll();
+  // public async getAll(): Promise<User | unknown> {
+  //   const users = await this.model.findAll();
 
-    return users;
-  }
-
-  // public async getByEmail(email: string): Promise<User | unknown> {
-  //   return await this.model.findOne({ where: { email } })
+  //   return users;
   // }
 
-  // private comparePassword = (receivedPass: string, passDatabase: string): boolean => {
-  //   return bcrypt.compareSync(receivedPass, passDatabase);
+  // public comparePassword = (receivedPass: string, passDatabase: string): boolean => {
+  //   return compareSync(receivedPass, passDatabase);
   // }
+
 }
 
 export default UserService;

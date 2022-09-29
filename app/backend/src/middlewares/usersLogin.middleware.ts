@@ -9,24 +9,36 @@ const schemaObjUser = Joi.object({
   password: Joi.string().required().min(7),
 })
 
-const messageError = (typeError: string) => {
+const objError = (typeError: string) => {
   if (typeError === 'string.email' || typeError === 'string.min') {
-    return 'Incorrect email or password';
+    return {
+      message: 'Incorrect email or password',
+      code: 401
+    }
   } else {
-    return 'All fields must be filled';
+    return {
+      message: 'All fields must be filled',
+      code: 400
+    }
   }
 }
 
-function validationUserLogin(req: Request, res: Response, next: NextFunction) {
-  const userLogin: UserLogin = req.body;
+async function validationUserLogin(req: Request, res: Response, next: NextFunction) {
+  const userLogin: UserLogin = await req.body;
 
   if (schemaObjUser.validate(userLogin).error) {
     const typeError = schemaObjUser.validate(userLogin).error?.details[0].type;
-    // return res.status(StatusCodes.BAD_REQUEST).json({ message: 'All fields must be filled' })
-    return res.status(StatusCodes.BAD_REQUEST).json({ message: messageError(typeError) })
+    const error = objError(typeError);
+    return res.status(error.code).json({ message: error.message })
   }
 
   next();
 }
 
 export default validationUserLogin;
+
+
+// string.email = email no formato incorreto 401  { "message": "Incorrect email or password" }
+// any.required = email não foi informado pelo usuário 400 { "message": "All fields must be filled" }
+// any.required = senha não foi informada pelo usuário 400 { "message": "All fields must be filled" }
+// string.min = senha menor com tamanho pequeno 401 { "message": "Incorrect email or password" }
