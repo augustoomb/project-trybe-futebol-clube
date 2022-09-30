@@ -1,12 +1,15 @@
-import Match from '../interfaces//match.interface';
+import Match from '../interfaces/match.interface';
 import MatchModel from '../database/models/MatchesModel';
 import Teams from '../database/models/TeamModel';
+import TeamModel from '../database/models/TeamModel';
+const { Op } = require('sequelize');
 
 class MatchService {
-  model = MatchModel;
+  matchModel = MatchModel;
+  teamModel = TeamModel;
 
   public async getAll(): Promise<Match[]> {
-    const matches = await this.model.findAll(
+    const matches = await this.matchModel.findAll(
       {
         include: [
           { model: Teams, as: 'teamHome', attributes: { exclude: ['id'] } },
@@ -17,19 +20,34 @@ class MatchService {
     return matches;
   }
 
-  public async create(match: Match): Promise<Match | any> {
+  // public async checkRegisterTeam(idTeam: number) {
+  //   const foundTeam = await this.teamModel.findOne({
+  //     where: {
+  //       [Op.or]: [
+  //         { homeTeam: { [Op.equal]: idTeam } },
+  //         { awayTeam: { [Op.equal]: idTeam } },
+  //       ],
+  //     }
+  //   })
+  // }
+
+  public async create(match: Match) {
+    if (match.awayTeam === match.homeTeam) {
+      return 401
+    }
+
     match.inProgress = true; // a partida deve ser salva como 'inProgress' = true
-    const createdMatch = await this.model.create(match);
+    const createdMatch = await this.matchModel.create(match);
 
     return createdMatch;
   }
 
   public async partialUpdate(id: number) {
-    const matchFound = await this.model.findByPk(id);
+    const matchFound = await this.matchModel.findByPk(id);
 
     if (matchFound !== null) {
       const inProgress = false;
-      await this.model.update({ inProgress }, { where: { id } })
+      await this.matchModel.update({ inProgress }, { where: { id } })
       return true;
     } else {
       return false;

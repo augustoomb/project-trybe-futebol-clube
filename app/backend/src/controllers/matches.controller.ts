@@ -15,6 +15,10 @@ class MatchesController {
     const match: Match = req.body;
     const createdMatch = await this.matchService.create(match);
 
+    if (createdMatch === 401) {
+      res.status(StatusCodes.UNAUTHORIZED).json({ message: 'It is not possible to create a match with two equal teams' })
+    }
+
     res.status(StatusCodes.CREATED).json(createdMatch);
   };
 
