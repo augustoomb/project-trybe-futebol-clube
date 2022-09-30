@@ -16,6 +16,13 @@ class MatchService {
     );
     return matches;
   }
+
+  public async create(match: Match): Promise<Match | any> {
+    match.inProgress = true; // a partida deve ser salva como 'inProgress' = true
+    const createdMatch = await this.model.create(match);
+
+    return createdMatch;
+  }
 }
 
 export default MatchService;
