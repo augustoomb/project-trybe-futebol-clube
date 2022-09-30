@@ -4,7 +4,7 @@ import * as chai from 'chai';
 import chaiHttp = require('chai-http');
 
 import { app } from '../app';
-import Example from '../database/models/ExampleModel';
+// import Example from '../database/models/ExampleModel';
 
 import { Response } from 'superagent';
 
@@ -41,7 +41,7 @@ describe('/login', () => {
       .request(app)
       .post('/login')
       .send({ email: "incorreto@admin.com", password: "secret_admin" }) // peguei as credenciais no arquivo 02_login_validate.test.js
-    expect(chaiHttpResponse.status).to.equal(404)
+    expect(chaiHttpResponse.status).to.equal(401)
   });
 
   // it('Seu sub-teste', () => {
