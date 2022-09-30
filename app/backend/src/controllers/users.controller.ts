@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import UserService from '../services/users.service';
-import { StatusCodes } from 'http-status-codes';
-import User from "../interfaces/user.interface";
+// import { StatusCodes } from 'http-status-codes';
+// import User from "../interfaces/user.interface";
 // import { RequestAuth } from "../interfaces/requestAuth.interface";
 
 class UsersController {
