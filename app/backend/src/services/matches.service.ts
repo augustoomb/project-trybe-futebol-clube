@@ -20,20 +20,9 @@ class MatchService {
     return matches;
   }
 
-  // public async checkRegisterTeam(idTeam: number) {
-  //   const foundTeam = await this.teamModel.findOne({
-  //     where: {
-  //       [Op.or]: [
-  //         { homeTeam: { [Op.equal]: idTeam } },
-  //         { awayTeam: { [Op.equal]: idTeam } },
-  //       ],
-  //     }
-  //   })
-  // }
-
   public async create(match: Match) {
     if (match.awayTeam === match.homeTeam) {
-      return 401
+      return 401;
     }
 
     match.inProgress = true; // a partida deve ser salva como 'inProgress' = true

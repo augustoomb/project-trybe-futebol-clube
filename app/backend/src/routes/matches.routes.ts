@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import validationAuth from '../middlewares/auth.middleware';
+// import validationAuth from '../middlewares/auth.middleware';
 import MatchesController from '../controllers/matches.controller';
 
 const matchesRouter = Router();
