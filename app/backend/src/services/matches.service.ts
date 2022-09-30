@@ -23,6 +23,18 @@ class MatchService {
 
     return createdMatch;
   }
+
+  public async partialUpdate(id: number) {
+    const matchFound = await this.model.findByPk(id);
+
+    if (matchFound !== null) {
+      const inProgress = false;
+      await this.model.update({ inProgress }, { where: { id } })
+      return true;
+    } else {
+      return false;
+    }
+  }
 }
 
 export default MatchService;

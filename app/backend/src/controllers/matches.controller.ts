@@ -17,6 +17,18 @@ class MatchesController {
 
     res.status(StatusCodes.CREATED).json(createdMatch);
   };
+
+  public partialUpdate = async (req: Request, res: Response) => {
+    const id = Number(req.params.id);
+
+    const updateMatch = await this.matchService.partialUpdate(id);
+
+    if (!updateMatch) {
+      res.status(401).json({ message: 'Incorrect id' });
+    } else {
+      res.status(200).json({ message: 'Finished' });
+    }
+  }
 }
 
 export default MatchesController;
