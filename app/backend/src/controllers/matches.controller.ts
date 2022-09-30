@@ -15,15 +15,17 @@ class MatchesController {
     const match: Match = req.body;
     const createdMatch = await this.matchService.create(match);
 
-    if (createdMatch === 401) {
+    if (createdMatch == 401) {
       res.status(StatusCodes.UNAUTHORIZED).json({ message: 'It is not possible to create a match with two equal teams' })
     }
 
-    // if (createdMatch === 404) {
-    //   res.status(StatusCodes.NOT_FOUND).json({ message: 'There is no team with such id!' })
-    // }
+    else if (createdMatch == 404) {
+      res.status(StatusCodes.NOT_FOUND).json({ message: 'There is no team with such id!' })
+    }
 
-    res.status(StatusCodes.CREATED).json(createdMatch);
+    else {
+      res.status(StatusCodes.CREATED).json(createdMatch);
+    }
   };
 
   public partialUpdate = async (req: Request, res: Response) => {

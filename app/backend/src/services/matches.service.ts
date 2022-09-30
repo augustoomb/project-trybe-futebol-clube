@@ -1,12 +1,12 @@
 import Match from '../interfaces/match.interface';
 import MatchModel from '../database/models/MatchesModel';
 import Teams from '../database/models/TeamModel';
-// import TeamModel from '../database/models/TeamModel';
+import TeamModel from '../database/models/TeamModel';
 // const { Op } = require('sequelize');
 
 class MatchService {
   matchModel = MatchModel;
-  // teamModel = TeamModel;
+  teamModel = TeamModel;
 
   public async getAll(): Promise<Match[]> {
     const matches = await this.matchModel.findAll(
@@ -20,9 +20,19 @@ class MatchService {
     return matches;
   }
 
+  // checar se ambos os ids recebidos na linha abaixo existem na tabela de teams
+  public async checkTeamExists(idAwayTeam: number, idHomeTeam: number) {
+    const teste1 = await this.teamModel.findByPk(idAwayTeam);
+    const teste2 = await this.teamModel.findByPk(idHomeTeam);
+
+    return teste1 && teste2;
+  }
+
   public async create(match: Match) {
     if (match.awayTeam === match.homeTeam) {
       return 401;
+    } else if (await this.checkTeamExists(match.awayTeam, match.homeTeam) === null) {
+      return 404;
     } else {
       match.inProgress = true; // a partida deve ser salva como 'inProgress' = true
       const createdMatch = await this.matchModel.create(match);
