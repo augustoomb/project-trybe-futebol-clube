@@ -1,12 +1,12 @@
 import Match from '../interfaces/match.interface';
 import MatchModel from '../database/models/MatchesModel';
 import Teams from '../database/models/TeamModel';
-import TeamModel from '../database/models/TeamModel';
-const { Op } = require('sequelize');
+// import TeamModel from '../database/models/TeamModel';
+// const { Op } = require('sequelize');
 
 class MatchService {
   matchModel = MatchModel;
-  teamModel = TeamModel;
+  // teamModel = TeamModel;
 
   public async getAll(): Promise<Match[]> {
     const matches = await this.matchModel.findAll(
@@ -23,12 +23,12 @@ class MatchService {
   public async create(match: Match) {
     if (match.awayTeam === match.homeTeam) {
       return 401;
+    } else {
+      match.inProgress = true; // a partida deve ser salva como 'inProgress' = true
+      const createdMatch = await this.matchModel.create(match);
+
+      return createdMatch;
     }
-
-    match.inProgress = true; // a partida deve ser salva como 'inProgress' = true
-    const createdMatch = await this.matchModel.create(match);
-
-    return createdMatch;
   }
 
   public async partialUpdate(id: number) {
