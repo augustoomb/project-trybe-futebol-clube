@@ -39,7 +39,7 @@ Matches.init({
   // ... Outras configs
   underscored: true,
   sequelize: db,
-  modelName: 'users',
+  modelName: 'matches',
   timestamps: false,
 });
 
@@ -48,10 +48,10 @@ Matches.init({
   * Associations 1:N devem ficar em uma das instâncias de modelo
   * */
 
-Teams.belongsTo(Matches, { foreignKey: 'homeTeam', as: 'fkHomeTeam' });
-Teams.belongsTo(Matches, { foreignKey: 'awayTeam', as: 'fkAwayTeam' });
+Teams.hasMany(Matches, { foreignKey: 'homeTeam', as: 'teamHome' });
+Teams.hasMany(Matches, { foreignKey: 'awayTeam', as: 'teamAway' });
 
-Matches.hasMany(Teams, { foreignKey: 'homeTeam', as: 'fkHomeTeam' });
-Matches.hasMany(Teams, { foreignKey: 'awayTeam', as: 'fkAwayTeam' });
+Matches.belongsTo(Teams, { foreignKey: 'homeTeam', as: 'teamHome' });
+Matches.belongsTo(Teams, { foreignKey: 'awayTeam', as: 'teamAway' });
 
 export default Matches;
