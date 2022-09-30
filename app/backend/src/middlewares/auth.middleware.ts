@@ -3,6 +3,7 @@ import { JsonWebTokenError, JwtPayload } from 'jsonwebtoken';
 import JwtTokenHelpers from "../helpers/jwtTokenHelpers";
 // import { RequestAuth } from "../interfaces/requestAuth.interface";
 
+// ESTA FUNÇÃO VALIDA E MANDA OS DADOS DESCRIPTOGRAFADOS DO TOKEN PARA O CONTROLLER
 function validationAuth(req: Request, res: Response, next: NextFunction) {
   const jwtTokenHelpers = new JwtTokenHelpers();
   const { authorization } = req.headers;
@@ -21,5 +22,22 @@ function validationAuth(req: Request, res: Response, next: NextFunction) {
 
 export default validationAuth;
 
+// ESTA FUNÇÃO VALIDA E NÃO MANDA OS DADOS DESCRIPTOGRAFADOS DO TOKEN PARA O CONTROLLER
+function simpleValidationAuth(req: Request, res: Response, next: NextFunction) {
+  const jwtTokenHelpers = new JwtTokenHelpers();
+  const { authorization } = req.headers;
+  if (!authorization) {
+    res.status(401).json({ message: 'Token must be a valid token' });
+  } else {
+    const checkedToken = jwtTokenHelpers.verifyToken(authorization);
+    if (checkedToken instanceof JsonWebTokenError) {
+      res.status(401).json({ message: 'Token must be a valid token' });
+    } else {
+      next();
+    }
+  }
+}
 
-// situação 26: descomentar o código do match service ver se funciona
+export { simpleValidationAuth };
+
+// REFATORAR!!!
