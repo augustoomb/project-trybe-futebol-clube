@@ -7,7 +7,8 @@ const matchesController = new MatchesController();
 
 matchesRouter.get('/matches', matchesController.getAll);
 matchesRouter.post('/matches', simpleValidationAuth, matchesController.create);
-matchesRouter.patch('/matches/:id/finish', matchesController.partialUpdate);
+matchesRouter.patch('/matches/:id/finish', matchesController.markMatchAsFinished);
+matchesRouter.patch('/matches/:id', matchesController.updateMatchInProgress);
 
 
 export default matchesRouter;

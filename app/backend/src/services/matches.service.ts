@@ -41,7 +41,8 @@ class MatchService {
     }
   }
 
-  public async partialUpdate(id: number) {
+  // MARCA PARTIDA RECEBIDA COMO FINALIZADA, OU SEJA, ATRIBUI false A PROPRIEDADE inProgress
+  public async markMatchAsFinished(id: number) {
     const matchFound = await this.matchModel.findByPk(id);
 
     if (matchFound !== null) {
@@ -50,6 +51,19 @@ class MatchService {
       return true;
     } else {
       return false;
+    }
+  }
+
+  public async updateMatchInProgress(id: number, homeTeamGoals: number, awayTeamGoals: number) {
+    const matchFound = await this.matchModel.findByPk(id);
+
+    if (matchFound === null) {
+      return false;
+    } else if (!matchFound.inProgress) {
+      return false;
+    } else {
+      await this.matchModel.update({ homeTeamGoals, awayTeamGoals }, { where: { id } })
+      return true;
     }
   }
 }

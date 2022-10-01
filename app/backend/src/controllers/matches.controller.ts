@@ -28,15 +28,30 @@ class MatchesController {
     }
   };
 
-  public partialUpdate = async (req: Request, res: Response) => {
+  public markMatchAsFinished = async (req: Request, res: Response) => {
     const id = Number(req.params.id);
 
-    const updateMatch = await this.matchService.partialUpdate(id);
+    const updateMatch = await this.matchService.markMatchAsFinished(id);
 
     if (!updateMatch) {
       res.status(401).json({ message: 'Incorrect id' });
     } else {
       res.status(200).json({ message: 'Finished' });
+    }
+  }
+
+
+  public updateMatchInProgress = async (req: Request, res: Response) => {
+    const id = Number(req.params.id);
+    const homeTeamGoals = Number(req.body.homeTeamGoals);
+    const awayTeamGoals = Number(req.body.awayTeamGoals);
+
+    const updatedMatch = await this.matchService.updateMatchInProgress(id, homeTeamGoals, awayTeamGoals);
+
+    if (!updatedMatch) {
+      res.status(401).json({ message: 'Incorrect id or finished match' });
+    } else {
+      res.status(200).json({ message: 'Updated!' });
     }
   }
 }
