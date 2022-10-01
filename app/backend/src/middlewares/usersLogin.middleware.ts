@@ -36,9 +36,3 @@ async function validationUserLogin(req: Request, res: Response, next: NextFuncti
 }
 
 export default validationUserLogin;
-
-
-// string.email = email no formato incorreto 401  { "message": "Incorrect email or password" }
-// any.required = email não foi informado pelo usuário 400 { "message": "All fields must be filled" }
-// any.required = senha não foi informada pelo usuário 400 { "message": "All fields must be filled" }
-// string.min = senha menor com tamanho pequeno 401 { "message": "Incorrect email or password" }
