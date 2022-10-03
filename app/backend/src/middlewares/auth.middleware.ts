@@ -1,7 +1,6 @@
 import { Request, NextFunction, Response } from "express";
 import { JsonWebTokenError, JwtPayload } from 'jsonwebtoken';
 import JwtTokenHelpers from "../helpers/jwtTokenHelpers";
-// import { RequestAuth } from "../interfaces/requestAuth.interface";
 
 // ESTA FUNÇÃO VALIDA E MANDA OS DADOS DESCRIPTOGRAFADOS DO TOKEN PARA O CONTROLLER
 function validationAuth(req: Request, res: Response, next: NextFunction) {

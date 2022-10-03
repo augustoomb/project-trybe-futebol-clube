@@ -6,13 +6,17 @@ class UserService {
   model = UserModel;
   jwt = new JwtTokenHelpers();
 
-  public async login(userLogin: UserLogin): Promise<any> {
-    const user = await this.model.findOne({ where: { email: userLogin.email } });
-    if (user !== null) {
-      const token = this.jwt.createToken(user);
-      return token;
-    } else {
-      return false;
+  public async login(userLogin: UserLogin) {
+    try {
+      const user = await this.model.findOne({ where: { email: userLogin.email } });
+      if (user !== null) {
+        const token = this.jwt.createToken(user);
+        return token;
+      } else {
+        return false;
+      }
+    } catch (error) {
+
     }
   }
 

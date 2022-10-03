@@ -6,7 +6,7 @@ import validationAuth from '../middlewares/auth.middleware';
 const usersRouter = Router();
 const usersController = new UsersController();
 
-usersRouter.get('/login/validate', validationAuth, usersController.loginValidate);
-usersRouter.post('/login', validationUserLogin, usersController.login);
+usersRouter.get('/login/validate', validationAuth, usersController.loginValidate); // valida o token e, se validado, envia os dados ao controller
+usersRouter.post('/login', validationUserLogin, usersController.login); // valida os dados de login com o Joi
 
 export default usersRouter;
