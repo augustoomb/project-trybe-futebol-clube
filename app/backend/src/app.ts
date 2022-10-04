@@ -3,7 +3,7 @@ import usersRouter from './routes/users.routes';
 import teamsRouter from './routes/teams.routes';
 import matchesRouter from './routes/matches.routes';
 import leaderboardsRouter from './routes/leaderboards.routes';
-import 'express-async-errors';
+// import 'express-async-errors';
 
 class App {
   public app: express.Express;
@@ -19,29 +19,6 @@ class App {
     this.app.use(teamsRouter);
     this.app.use(matchesRouter);
     this.app.use(leaderboardsRouter);
-
-    // MIDDLEWARE DE ERRO - testando
-    this.app.use((err: Error, req: express.Request, res: express.Response, next: express.NextFunction) => {
-      const { name, message, details } = err as any;
-      console.log(`name: ${name}`);
-
-      // switch (name) {
-      //   case 'ValidationError':
-      //     res.status(400).json({ message: details[0].message });
-      //     break;
-      //   case 'NotFoundError':
-      //     res.status(404).json({ message });
-      //     break;
-      //   case 'ConflictError':
-      //     res.status(409).json({ message });
-      //     break;
-      //   default:
-      //     console.error(err);
-      //     res.sendStatus(500);
-      // }
-
-      next();
-    });
   }
 
   private config(): void {
