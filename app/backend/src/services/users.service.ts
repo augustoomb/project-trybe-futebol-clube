@@ -16,7 +16,8 @@ class UserService {
         return false;
       }
     } catch (error) {
-
+      const objError = error as Error;
+      console.log(objError.message);
     }
   }
 

@@ -6,7 +6,7 @@ import UserLogin from '../interfaces/userLogin.interface';
 class JwtTokenHelpers {
   public secret = process.env.JWT_SECRET || 'minhaSenhaSecreta';
 
-  public createToken(payload: User) {
+  public createToken(payload: User): string {
     const token = jwt.sign({ payload }, this.secret, { algorithm: 'HS256', expiresIn: '7d' });
     return token;
   }
